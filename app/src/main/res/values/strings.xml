@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Mobile PEAS User</string>
+    <string name="about_app">Mobile PEAS is an Android mobile application which implements Attribute-based authentication. Application is developed for testing purposes as a final thesis project at University of technology in Brno. Cryptography core of this application is based on MCL library.
+
+    </string>
+    <string name="title_activity_attributes_management">AttributesManagementActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+</resources>
