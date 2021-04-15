@@ -114,6 +114,10 @@ public class HistoryActivity extends AppCompatActivity {
             else if (sharedPreferences.getString(Constants.SystemParameters.LOG_STATE + i, "").equals(Constants.Errors.INS_GET_PROOF_OF_KNOWLEDGE)){
                 historyLogsList.add(new HistoryItem(R.drawable.ic_baseline_error_outline_24, sharedPreferences.getString(Constants.SystemParameters.LOG_DATE + i, ""), sharedPreferences.getString(Constants.SystemParameters.LOG_STATE + i, "")));
             }
+            //Error during Debug instruction
+            else if (sharedPreferences.getString(Constants.SystemParameters.LOG_STATE + i, "").equals(Constants.Errors.DEBUG_T)){
+                historyLogsList.add(new HistoryItem(R.drawable.ic_baseline_error_outline_24, sharedPreferences.getString(Constants.SystemParameters.LOG_DATE + i, ""), sharedPreferences.getString(Constants.SystemParameters.LOG_STATE + i, "")));
+            }
         }
     }
 }

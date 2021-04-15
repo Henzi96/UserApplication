@@ -64,5 +64,6 @@ public class Constants {
         public static final String INS_COMPUTE_PROOF_OF_KNOWLEDGE_SEQ_DISCLOSED = "Proof of Knowledge computation Error";
         public static final String INS_GET_PROOF_OF_KNOWLEDGE = "Proof of Knowledge Data Request Error";
         public static final String INS_GET_USER_DISCLOSED_ATTRIBUTES = "Error setting Attributes disclosing";
+        public static final String DEBUG_T = "Error during debug instruction";
     }
 }

@@ -26,6 +26,7 @@ public class ApduValues {
         public static final String INS_COMPUTE_PROOF_OF_KNOWLEDGE_SEQ_DISCLOSED = "0A";
         public static final String INS_GET_PROOF_OF_KNOWLEDGE = "07";
         public static final String INS_GET_USER_DISCLOSED_ATTRIBUTES = "0C";
+        public static final String INS_GET_T = "08";
     }
 
 }

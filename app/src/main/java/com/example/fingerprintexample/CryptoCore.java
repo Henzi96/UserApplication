@@ -166,6 +166,18 @@ public class CryptoCore {
         editor.putString(Constants.SystemParameters.SIGMA_PLANE_E_I, mclCurvePointToDatabase(sigma_plane_eI));
         //"sigma_plane_eII" storing
         editor.putString(Constants.SystemParameters.SIGMA_PLANE_E_II, mclCurvePointToDatabase(sigma_plane_eII));
+        //debug-mode
+        editor.putString("t_verify_debug", mclCurvePointToDatabase(t_verify));
+        editor.putString("t_revoke_debug", mclCurvePointToDatabase(t_revoke));
+        editor.putString("t_sig_debug", mclCurvePointToDatabase(t_sig));
+        editor.putString("t_sig1_debug", mclCurvePointToDatabase(t_sig_I));
+        editor.putString("t_sig2_debug", mclCurvePointToDatabase(t_sig_II));
+        editor.putString("sigma_hat_debug", mclCurvePointToDatabase(sigma_roof));
+        editor.putString("sigma_hat_e1_debug", mclCurvePointToDatabase(sigma_roof_eI));
+        editor.putString("sigma_hat_e2_debug", mclCurvePointToDatabase(sigma_roof_eII));
+        editor.putString("sigma_minus_e1_debug", mclCurvePointToDatabase(sigma_plane_eI));
+        editor.putString("sigma_minus_e2_debug", mclCurvePointToDatabase(sigma_plane_eII));
+        editor.putString("pseudonym_debug", mclCurvePointToDatabase(C));
         //SharedPreferences database Commit
         editor.commit();
         /*      *//*

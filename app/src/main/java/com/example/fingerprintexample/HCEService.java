@@ -713,6 +713,85 @@ public class HCEService extends HostApduService {
                     apduResponse = new ApduResponseObject(null, ApduValues.SW1_SW2.STATUS_FAILED);
                     return Utils.hexStringToByteArray(apduResponse.toString());
                 }
+            case ApduValues.APDU_instructions.INS_GET_T:
+                try {
+                    //Saving Byte P1 byte, which describes Protocol parameter
+                    String P1_INS_GET_T = hexCommandApdu.substring(4, 6);
+                    //t_verify_debug
+                    if (P1_INS_GET_T.equals("01")) {
+                        String t_verify_debug = sharedPreferences.getString("t_verify_debug", "00");
+                        apduResponse = new ApduResponseObject(t_verify_debug, ApduValues.SW1_SW2.STATUS_SUCCESS);
+                        return Utils.hexStringToByteArray(apduResponse.toString());
+                    }
+                    //t_revoke_debug
+                    else if (P1_INS_GET_T.equals("02")) {
+                        String t_revoke_debug = sharedPreferences.getString("t_revoke_debug", "00");
+                        apduResponse = new ApduResponseObject(t_revoke_debug, ApduValues.SW1_SW2.STATUS_SUCCESS);
+                        return Utils.hexStringToByteArray(apduResponse.toString());
+                    }
+                    //t_sig_debug
+                    else if (P1_INS_GET_T.equals("03")) {
+                        String t_sig_debug = sharedPreferences.getString("t_sig_debug", "00");
+                        apduResponse = new ApduResponseObject(t_sig_debug, ApduValues.SW1_SW2.STATUS_SUCCESS);
+                        return Utils.hexStringToByteArray(apduResponse.toString());
+                    }
+                    //t_sig_debug
+                    else if (P1_INS_GET_T.equals("04")) {
+                        String t_sig1_debug = sharedPreferences.getString("t_sig1_debug", "00");
+                        apduResponse = new ApduResponseObject(t_sig1_debug, ApduValues.SW1_SW2.STATUS_SUCCESS);
+                        return Utils.hexStringToByteArray(apduResponse.toString());
+                    }
+                    //t_sig2_debug
+                    else if (P1_INS_GET_T.equals("05")) {
+                        String t_sig2_debug = sharedPreferences.getString("t_sig2_debug", "00");
+                        apduResponse = new ApduResponseObject(t_sig2_debug, ApduValues.SW1_SW2.STATUS_SUCCESS);
+                        return Utils.hexStringToByteArray(apduResponse.toString());
+                    }
+                    //sigma_hat_debug
+                    else if (P1_INS_GET_T.equals("06")) {
+                        String sigma_hat_debug = sharedPreferences.getString("sigma_hat_debug", "00");
+                        apduResponse = new ApduResponseObject(sigma_hat_debug, ApduValues.SW1_SW2.STATUS_SUCCESS);
+                        return Utils.hexStringToByteArray(apduResponse.toString());
+                    }
+                    //sigma_hat_e1_debug
+                    else if (P1_INS_GET_T.equals("07")) {
+                        String sigma_hat_e1_debug = sharedPreferences.getString("sigma_hat_e1_debug", "00");
+                        apduResponse = new ApduResponseObject(sigma_hat_e1_debug, ApduValues.SW1_SW2.STATUS_SUCCESS);
+                        return Utils.hexStringToByteArray(apduResponse.toString());
+                    }
+                    //sigma_hat_e2_debug
+                    else if (P1_INS_GET_T.equals("08")) {
+                        String sigma_hat_e2_debug = sharedPreferences.getString("sigma_hat_e2_debug", "00");
+                        apduResponse = new ApduResponseObject(sigma_hat_e2_debug, ApduValues.SW1_SW2.STATUS_SUCCESS);
+                        return Utils.hexStringToByteArray(apduResponse.toString());
+                    }
+                    //sigma_minus_e1_debug
+                    else if (P1_INS_GET_T.equals("09")) {
+                        String sigma_minus_e1_debug = sharedPreferences.getString("sigma_minus_e1_debug", "00");
+                        apduResponse = new ApduResponseObject(sigma_minus_e1_debug, ApduValues.SW1_SW2.STATUS_SUCCESS);
+                        return Utils.hexStringToByteArray(apduResponse.toString());
+                    }
+                    //sigma_minus_e2_debug
+                    else if (P1_INS_GET_T.equals("0A")) {
+                        String sigma_minus_e2_debug = sharedPreferences.getString("sigma_minus_e2_debug", "00");
+                        apduResponse = new ApduResponseObject(sigma_minus_e2_debug, ApduValues.SW1_SW2.STATUS_SUCCESS);
+                        return Utils.hexStringToByteArray(apduResponse.toString());
+                    }
+                    //pseudonym_debug
+                    else if (P1_INS_GET_T.equals("0B")) {
+                        String pseudonym_debug = sharedPreferences.getString("pseudonym_debug", "00");
+                        apduResponse = new ApduResponseObject(pseudonym_debug, ApduValues.SW1_SW2.STATUS_SUCCESS);
+                        return Utils.hexStringToByteArray(apduResponse.toString());
+                    } else if (P1_INS_GET_T.equals("0C")) {
+                        apduResponse = new ApduResponseObject("08050704", ApduValues.SW1_SW2.STATUS_SUCCESS);
+                        return Utils.hexStringToByteArray(apduResponse.toString());
+                    }
+                } catch (Exception e) {
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    createLog(Constants.Errors.DEBUG_T, currentDate, editor);
+                    apduResponse = new ApduResponseObject(null, ApduValues.SW1_SW2.STATUS_FAILED);
+                    return Utils.hexStringToByteArray(apduResponse.toString());
+                }
             default:
                 apduResponse = new ApduResponseObject(null, ApduValues.SW1_SW2.INS_NOT_SUPPORTED);
                 return Utils.hexStringToByteArray(apduResponse.toString());
