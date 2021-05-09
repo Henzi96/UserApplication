@@ -297,8 +297,6 @@ public class CryptoCore {
         //t_verify = tmp11 + tmp10
         G1 t_verify = new G1();
         com.herumi.mcl.Mcl.add(t_verify, tmp11, tmp10);
-        System.out.println("t_verify:" + t_verify.toString());
-        System.out.println("t_verify_user:" + t_verify_user.toString());
         return t_verify.equals(t_verify_user);
     }
 
@@ -535,11 +533,13 @@ public class CryptoCore {
         //"i" - "m_r"
         com.herumi.mcl.Mcl.sub(tmp_1, i, m_r);
         //Conversion of Epoch into Fr using SHA-1
-        String epoch_hash = new BigInteger(SHA1_PADDING + SHA1(sharedPreferences.getString(Constants.SystemParameters.EPOCH, Constants.SystemParameters.BYTE_0)), 16).mod(BN256_q).toString(16);
+        String epoch_hash = new BigInteger(SHA1_PADDING +
+                SHA1(sharedPreferences.getString(Constants.SystemParameters.EPOCH, Constants.SystemParameters.BYTE_0)), 16)
+                .mod(BN256_q).toString(16);
         Fr epoch_tmp = new Fr(epoch_hash, 16);
         //(i - m_r) + SHA1(epoch)
         com.herumi.mcl.Mcl.add(tmp_2, tmp_1, epoch_tmp);
-        //1 / denominator
+        // denominator
         com.herumi.mcl.Mcl.div(multiplier, new Fr(1), tmp_2);
         //Initialization of C
         G1 C = new G1();
@@ -668,27 +668,16 @@ public class CryptoCore {
 
     private Fr compute_e(G1 t_verify, G1 t_revoke, G1 t_sig, G1 t_sig_I, G1 t_sig_II, G1 sigma_roof, G1 sigma_roof_eI, G1 sigma_plane_eI, G1 sigma_roof_eII, G1 sigma_plane_eII, G1 C, String nonce) {
         String t_verify_HEX = mclCurvePointToDatabase(t_verify);
-        System.out.println("t_verify_HEX:" + t_verify_HEX);
         String t_revoke_HEX = mclCurvePointToDatabase(t_revoke);
-        System.out.println("t_revoke_HEX:" + t_revoke_HEX);
         String t_sig_HEX = mclCurvePointToDatabase(t_sig);
-        System.out.println("t_sig_HEX:" + t_sig_HEX);
         String t_sig_I_HEX = mclCurvePointToDatabase(t_sig_I);
-        System.out.println("t_sig_I_HEX:" + t_sig_I_HEX);
         String t_sig_II_HEX = mclCurvePointToDatabase(t_sig_II);
-        System.out.println("t_sig_II_HEX:" + t_sig_II_HEX);
         String sigma_roof_HEX = mclCurvePointToDatabase(sigma_roof);
-        System.out.println("sigma_roof_HEX:" + sigma_roof_HEX);
         String sigma_roof_eI_HEX = mclCurvePointToDatabase(sigma_roof_eI);
-        System.out.println("sigma_roof_eI_HEX:" + sigma_roof_eI_HEX);
         String sigma_plane_eI_HEX = mclCurvePointToDatabase(sigma_plane_eI);
-        System.out.println("sigma_plane_eI_HEX:" + sigma_plane_eI_HEX);
         String sigma_roof_eII_HEX = mclCurvePointToDatabase(sigma_roof_eII);
-        System.out.println("sigma_roof_eII_HEX:" + sigma_roof_eII_HEX);
         String sigma_plane_eII_HEX = mclCurvePointToDatabase(sigma_plane_eII);
-        System.out.println("sigma_plane_eII_HEX:" + sigma_plane_eII_HEX);
         String C_HEX = mclCurvePointToDatabase(C);
-        System.out.println("C_HEX: " + C_HEX);
         String hash = SHA1(t_verify_HEX + t_revoke_HEX + t_sig_HEX + t_sig_I_HEX + t_sig_II_HEX + sigma_roof_HEX + sigma_roof_eI_HEX + sigma_plane_eI_HEX + sigma_roof_eII_HEX + sigma_plane_eII_HEX + C_HEX + nonce);
         BigInteger hash_mod_q_BigInt = new BigInteger(SHA1_PADDING + hash, 16);
         hash_mod_q_BigInt.mod(BN256_q);
@@ -854,8 +843,25 @@ public class CryptoCore {
         }
         md.update(input.getBytes());
         byte[] digest = md.digest();
-        System.out.println(Utils.byteArrayToHexString(digest).toUpperCase());
         return Utils.byteArrayToHexString(digest).toUpperCase();
+    }
+
+    //This method returns output of SHA-256 hash function
+    private String SHA256_Android(String input) {
+        MessageDigest md = null;
+        try {
+            md = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        md.update(input.getBytes());
+        byte[] digest = md.digest();
+        return Utils.byteArrayToHexString(digest).toUpperCase();
+    }
+
+    public String SHA256(String input) {
+        BigInteger number = new BigInteger(SHA256_Android(input), 16).mod(BN256_q);
+        return Utils.byteArrayToHexString(number.toByteArray());
     }
 
 

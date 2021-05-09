@@ -14,7 +14,7 @@ import android.widget.Button;
 
 public class MenuActivity extends AppCompatActivity {
 
-    Button btn_history, btn_settings, btn_about, exit_btn;
+    Button btn_history, btn_settings, btn_about, exit_btn, btn_qr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +29,14 @@ public class MenuActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent historyIntent = new Intent(MenuActivity.this, HistoryActivity.class);
                 startActivity(historyIntent);
+            }
+        });
+        //QR Generator
+        btn_qr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent qrIntent = new Intent(MenuActivity.this, QrActivity.class);
+                startActivity(qrIntent);
             }
         });
         //Settings
@@ -61,6 +69,7 @@ public class MenuActivity extends AppCompatActivity {
         btn_settings = findViewById(R.id.btn_settings);
         btn_about = findViewById(R.id.btn_about);
         exit_btn = findViewById(R.id.exit_btn);
+        btn_qr = findViewById(R.id.btn_qr);
     }
 
 

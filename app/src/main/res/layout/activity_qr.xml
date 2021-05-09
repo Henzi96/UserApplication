@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@drawable/background"
+    android:layout_height="match_parent"
+    tools:context=".QrActivity">
+
+
+    <ImageView
+        android:id="@+id/qr_output"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_marginTop="15sp"
+        android:id="@+id/txt_qr_generator_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_bold"
+        android:textColor="@color/colorText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/qr_output" />
+
+    <EditText
+        android:id="@+id/editText_shaInput"
+        android:layout_width="253dp"
+        android:layout_height="55dp"
+        android:gravity="center"
+        android:layout_marginTop="15sp"
+        android:fontFamily="@font/roboto"
+        android:hint="Enter attribute value"
+        android:textColor="@color/colorText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_qr_generator_state" />
+
+    <Button
+        android:id="@+id/btn_generate_qr"
+        android:layout_width="255dp"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="15dp"
+        android:background="@drawable/button_bg_custom_set"
+        android:fontFamily="@font/roboto_bold"
+        android:text="Generate"
+        android:textColor="#FFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText_shaInput" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

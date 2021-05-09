@@ -11,7 +11,9 @@ import com.herumi.mcl.G2;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 import java.util.Random;
 
@@ -37,6 +39,8 @@ public class HCEService extends HostApduService {
     int indexHolder_DISCLOSED = 0;
     //EMPTY value
     String EMPTY = "";
+    long startTime = 0;
+    long stopTime = 0;
 
 
     /* APDU command
@@ -65,7 +69,6 @@ public class HCEService extends HostApduService {
         }
         //Received APDU command as a hexadecimal representation
         String hexCommandApdu = Utils.byteArrayToHexString(commandApdu).toUpperCase();
-        System.out.println(hexCommandApdu);
 
         //Checking the minimum APDU length 4 bytes (8 chars)
         if (hexCommandApdu.length() < ApduValues.APDU_constants.MIN_APDU_LENGTH) {
@@ -525,7 +528,7 @@ public class HCEService extends HostApduService {
                 /*
                 User sends:
                 PI   (e, (s_m_1...s_m_9 ∉ D), s_v, s_m_r, s_i, s_eI, s_eII) - Proof of Knowledge [max 468 B]
-                cred (C, sigma_roof, sigma_roof_eI, sigma_roof_eII, sigma_plane_eI, sigma_plane_eII) [390 B]
+                cred (sigma_roof, sigma_roof_eI, sigma_roof_eII, sigma_plane_eI, sigma_plane_eII, C) [390 B]
                 1:  e.............................................[20 B]
                 2:  s_v...........................................[32 + 1 B] first B is 00 (MultOS)
                 3:  s_i...........................................[32 + 1 B] first B is 00 (MultOS)
@@ -533,12 +536,12 @@ public class HCEService extends HostApduService {
                 5:  s_eII.........................................[32 B]
                 6:  s_m_r.........................................[32 B]
                 7:  s_m_1...s_m_9 ∉ D.............................[32 B each]
-                8:  C.............................................[65 B]
-                9:  sigma_roof....................................[65 B]
-                10: sigma_roof_eI.................................[65 B]
-                11: sigma_roof_eII................................[65 B]
-                12: sigma_plane_eI................................[65 B]
-                13: sigma_plane_eII...............................[65 B]
+                8:  sigma_roof....................................[65 B]
+                9:  sigma_roof_eI.................................[65 B]
+                10: sigma_roof_eII................................[65 B]
+                11: sigma_plane_eI................................[65 B]
+                12: sigma_plane_eII...............................[65 B]
+                13: C.............................................[65 B]
                  */
                     //Setting P1 "PI" = 01 or "cred" = 02
                     String P1_GET_PROOF_OF_KNOWLEDGE = hexCommandApdu.substring(4, 6);
@@ -602,7 +605,7 @@ public class HCEService extends HostApduService {
                         String sigma_roof_eII = sharedPreferences.getString(Constants.SystemParameters.SIGMA_ROOF_E_II, EMPTY);
                         String sigma_plane_eI = sharedPreferences.getString(Constants.SystemParameters.SIGMA_PLANE_E_I, EMPTY);
                         String sigma_plane_eII = sharedPreferences.getString(Constants.SystemParameters.SIGMA_PLANE_E_II, EMPTY);
-                        String allCredsParams = C + sigma_roof + sigma_roof_eI + sigma_roof_eII + sigma_plane_eI + sigma_plane_eII;
+                        String allCredsParams = sigma_roof + sigma_roof_eI + sigma_roof_eII + sigma_plane_eI + sigma_plane_eII + C;
                         if (SN_creds == 1) {
                             //Due to constant length of "creds", which is 390 B the first response will always have 250B long data, which is 500 chars
                             indexHolderCreds += 2 * Integer.parseInt(hexCommandApdu.substring(8, 10), 16);
@@ -782,8 +785,10 @@ public class HCEService extends HostApduService {
                         String pseudonym_debug = sharedPreferences.getString("pseudonym_debug", "00");
                         apduResponse = new ApduResponseObject(pseudonym_debug, ApduValues.SW1_SW2.STATUS_SUCCESS);
                         return Utils.hexStringToByteArray(apduResponse.toString());
-                    } else if (P1_INS_GET_T.equals("0C")) {
-                        apduResponse = new ApduResponseObject("08050704", ApduValues.SW1_SW2.STATUS_SUCCESS);
+                    }
+                    //Randomizers -> Different approach , so sending empty byte
+                    else if (P1_INS_GET_T.equals("0C")) {
+                        apduResponse = new ApduResponseObject("00000000", ApduValues.SW1_SW2.STATUS_SUCCESS);
                         return Utils.hexStringToByteArray(apduResponse.toString());
                     }
                 } catch (Exception e) {
