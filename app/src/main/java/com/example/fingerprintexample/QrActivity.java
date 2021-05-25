@@ -50,7 +50,7 @@ public class QrActivity extends AppCompatActivity {
                         throw new IllegalArgumentException();
                     }
                     CryptoCore cryptoCore = new CryptoCore(getApplicationContext());
-                    String input_hash = cryptoCore.SHA256(input);
+                    String input_hash = cryptoCore.SHA256_Android(input);
                     //Initialize multi format writer
                     MultiFormatWriter writer = new MultiFormatWriter();
                     //Initialize bit matrix

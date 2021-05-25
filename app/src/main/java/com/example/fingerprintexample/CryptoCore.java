@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import com.herumi.mcl.*;
 
 import java.math.BigInteger;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
@@ -678,7 +680,7 @@ public class CryptoCore {
         String sigma_roof_eII_HEX = mclCurvePointToDatabase(sigma_roof_eII);
         String sigma_plane_eII_HEX = mclCurvePointToDatabase(sigma_plane_eII);
         String C_HEX = mclCurvePointToDatabase(C);
-        String hash = SHA1(t_verify_HEX + t_revoke_HEX + t_sig_HEX + t_sig_I_HEX + t_sig_II_HEX + sigma_roof_HEX + sigma_roof_eI_HEX + sigma_plane_eI_HEX + sigma_roof_eII_HEX + sigma_plane_eII_HEX + C_HEX + nonce);
+        String hash = SHA1(t_verify_HEX + t_revoke_HEX + t_sig_HEX + t_sig_I_HEX + t_sig_II_HEX + sigma_roof_HEX + sigma_roof_eI_HEX + sigma_roof_eII_HEX + sigma_plane_eI_HEX + sigma_plane_eII_HEX + C_HEX + nonce);
         BigInteger hash_mod_q_BigInt = new BigInteger(SHA1_PADDING + hash, 16);
         hash_mod_q_BigInt.mod(BN256_q);
         hash = hash_mod_q_BigInt.toString(16);
@@ -847,7 +849,7 @@ public class CryptoCore {
     }
 
     //This method returns output of SHA-256 hash function
-    private String SHA256_Android(String input) {
+    public String SHA256_Android(String input) {
         MessageDigest md = null;
         try {
             md = MessageDigest.getInstance("SHA-256");
@@ -856,13 +858,17 @@ public class CryptoCore {
         }
         md.update(input.getBytes());
         byte[] digest = md.digest();
-        return Utils.byteArrayToHexString(digest).toUpperCase();
+        return toLittleEndian(Utils.byteArrayToHexString(digest).toUpperCase());
     }
 
-    public String SHA256(String input) {
-        BigInteger number = new BigInteger(SHA256_Android(input), 16).mod(BN256_q);
-        return Utils.byteArrayToHexString(number.toByteArray());
+    private static String toLittleEndian(String bigEndian) {
+        String littleEndian = "";
+        int lengthHolder = bigEndian.length();
+        for (int i = 0; i < 32; i++) {
+            littleEndian += bigEndian.substring(lengthHolder - 2, lengthHolder);
+            lengthHolder -= 2;
+        }
+        return littleEndian;
     }
-
 
 }
