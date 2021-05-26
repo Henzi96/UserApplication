@@ -843,7 +843,7 @@ public class CryptoCore {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        md.update(input.getBytes());
+        md.update(Utils.hexStringToByteArray(input));
         byte[] digest = md.digest();
         return Utils.byteArrayToHexString(digest).toUpperCase();
     }
